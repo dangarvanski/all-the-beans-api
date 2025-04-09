@@ -6,6 +6,6 @@ namespace all_the_breans_infrastructure.Interfaces
     public interface IAppDbContext
     {
         DbSet<BeanDbRecord> Beans { get; set; }
-        Task<BeanDbRecord?> GetRecordByIdAsync(int id);
+        Task<BeanDbRecord?> GetRecordByIndexAsync(int id);
     }
 }

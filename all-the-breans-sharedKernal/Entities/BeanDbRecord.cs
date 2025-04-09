@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace all_the_breans_sharedKernal.Entities
 {
     public class BeanDbRecord
     {
-        public string _id { get; set; }
+        [Key]
+        public required string _id { get; set; }
 
         public int index { get; set; }
 

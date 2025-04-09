@@ -13,9 +13,9 @@ namespace all_the_beans_application.Services
             _appDbContext = appDbContext;
         }
 
-        public async Task<BeanDbRecord?> GetRecordByIdAsync(int id)
+        public async Task<BeanDbRecord?> GetRecordByIndexAsync(int id)
         {
-            return await _appDbContext.GetRecordByIdAsync(id);
+            return await _appDbContext.GetRecordByIndexAsync(id);
         }
     }
 }

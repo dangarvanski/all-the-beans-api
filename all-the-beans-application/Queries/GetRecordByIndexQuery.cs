@@ -4,9 +4,9 @@ using MediatR;
 
 namespace all_the_beans_application.Queries
 {
-    public record GetRecordByIdQuery(int id) : IRequest<BeanDbRecord>;
+    public record GetRecordByIndexQuery(int id) : IRequest<BeanDbRecord>;
 
-    public sealed class GetRecordById : IRequestHandler<GetRecordByIdQuery, BeanDbRecord>
+    public sealed class GetRecordById : IRequestHandler<GetRecordByIndexQuery, BeanDbRecord>
     {
         private IBeansService _beansService;
 
@@ -15,9 +15,9 @@ namespace all_the_beans_application.Queries
             _beansService = beansService;
         }
 
-        public Task<BeanDbRecord> Handle(GetRecordByIdQuery request, CancellationToken cancellationToken)
+        public Task<BeanDbRecord> Handle(GetRecordByIndexQuery request, CancellationToken cancellationToken)
         {
-            return _beansService.GetRecordByIdAsync(request.id)!;
+            return _beansService.GetRecordByIndexAsync(request.id)!;
         }
     }
 }

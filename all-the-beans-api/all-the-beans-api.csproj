@@ -16,4 +16,10 @@
     <ProjectReference Include="..\all-the-beans-application\all-the-beans-application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="BeansDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
