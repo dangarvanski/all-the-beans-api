@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-application",
 		{1823289A-43E4-440F-B546-5692CD1E18C7} = {1823289A-43E4-440F-B546-5692CD1E18C7}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateSQLiteDatabase", "CreateSQLiteDatabase\CreateSQLiteDatabase.csproj", "{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{376C29B6-0EC4-4AA6-A2BC-BDDB1949602C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{376C29B6-0EC4-4AA6-A2BC-BDDB1949602C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{376C29B6-0EC4-4AA6-A2BC-BDDB1949602C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
