@@ -1,23 +1,23 @@
-﻿using all_the_beans_application.Interfaces;
+﻿using all_the_breans_infrastructure.Interfaces;
 using all_the_breans_sharedKernal.Entities;
 using MediatR;
 
 namespace all_the_beans_application.Queries
 {
-    public record GetRecordByIndexQuery(int id) : IRequest<BeanDbRecord>;
+    public record GetRecordByIndexQuery(int id) : IRequest<BeanDbRecord?>;
 
-    public sealed class GetRecordById : IRequestHandler<GetRecordByIndexQuery, BeanDbRecord>
+    public sealed class GetRecordById : IRequestHandler<GetRecordByIndexQuery, BeanDbRecord?>
     {
-        private IBeansService _beansService;
+        private readonly IBeansDbRepository _beansDbRepo;
 
-        public GetRecordById(IBeansService beansService)
+        public GetRecordById(IBeansDbRepository beansDbRepo)
         {
-            _beansService = beansService;
+            _beansDbRepo = beansDbRepo;
         }
 
-        public Task<BeanDbRecord> Handle(GetRecordByIndexQuery request, CancellationToken cancellationToken)
+        public async Task<BeanDbRecord?> Handle(GetRecordByIndexQuery request, CancellationToken cancellationToken)
         {
-            return _beansService.GetRecordByIndexAsync(request.id)!;
+            return await _beansDbRepo.GetRecordByIndexAsync(request.id);
         }
     }
 }
