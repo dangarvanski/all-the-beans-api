@@ -26,24 +26,44 @@ namespace all_the_breans_infrastructure.Repositories
 
         public async Task<BeanDbRecord> InsertNewBeanRecordAsync(BeanDbRecord record, CancellationToken cancellationToken)
         {
-            Beans.Add(record);
-            await SaveChangesAsync(cancellationToken);
-            return record;
+            try
+            {
+                Beans.Add(record);
+                await SaveChangesAsync(cancellationToken);
+                return record;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Failed to create new record", ex);
+            }
         }
 
         public async Task<bool> UpdateBeanRecordAsync(BeanDbRecord originalRecord, BeanDbRecord updatedRecord, CancellationToken cancellationToken)
         {
-            Entry(originalRecord).CurrentValues.SetValues(updatedRecord);
-            await SaveChangesAsync(cancellationToken);
-            return true;
-
+            try
+            {
+                Entry(originalRecord).CurrentValues.SetValues(updatedRecord);
+                await SaveChangesAsync(cancellationToken);
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Failed to update record", ex);
+            }
         }
 
         public async Task<bool> DeleteRecordByIndexAsync(BeanDbRecord record , CancellationToken cancellationToken)
         {
-            Beans.Remove(record);
-            await SaveChangesAsync(cancellationToken);
-            return true;
+            try
+            {
+                Beans.Remove(record);
+                await SaveChangesAsync(cancellationToken);
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Failed to delete record", ex);
+            }
         }
 
         public async Task<BeanOfTheDayDbRecord> InsertRecordAsync(BeanOfTheDayDbRecord record)

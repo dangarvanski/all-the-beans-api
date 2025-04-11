@@ -68,6 +68,7 @@ namespace all_the_beans_api.Controllers
         [HttpPatch("update-record/{index}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<BeanDbRecord>> UpdateRecord(int index, [FromBody] UpdateRecordRequest recordUpdate)
         {

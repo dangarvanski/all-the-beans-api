@@ -24,6 +24,7 @@ namespace all_the_beans_application.Commands
                 return null;
             }
 
+            bool hasValidField = false;
             var updatedRecord = dbRecord;
             var updateProperties = typeof(UpdateRecordRequest).GetProperties();
             foreach (var prop in updateProperties)
@@ -35,9 +36,13 @@ namespace all_the_beans_application.Commands
                     if (recordProp != null && recordProp.CanWrite)
                     {
                         recordProp.SetValue(updatedRecord, value);
+                        hasValidField = true;
                     }
                 }
             }
+
+            if (!hasValidField)
+                throw new ArgumentException("At least one valid field must be provided");
 
             var success = await _beansDbRepo.UpdateBeanRecordAsync(dbRecord, updatedRecord, cancellationToken);
 
