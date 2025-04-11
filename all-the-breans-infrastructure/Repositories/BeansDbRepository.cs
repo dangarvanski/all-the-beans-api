@@ -1,11 +1,10 @@
 ﻿using all_the_breans_infrastructure.Interfaces;
 using all_the_breans_sharedKernal.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace all_the_breans_infrastructure.Repositories
 {
-    public class BeansDbRepository : DbContext , IBeansDbRepository
+    public class BeansDbRepository : DbContext, IBeansDbRepository
     {
         public DbSet<BeanDbRecord> Beans { get; set; }
         public DbSet<BeanOfTheDayDbRecord> BeanOfTheDay { get; set; }
@@ -22,6 +21,11 @@ namespace all_the_breans_infrastructure.Repositories
         public async Task<BeanDbRecord?> GetRecordByIndexAsync(int index)
         {
             return await Beans.FirstOrDefaultAsync(x => x.index == index);
+        }
+
+        public async Task<BeanDbRecord?> GetBeanOfTheDayRecordAsync()
+        {
+            return await Beans.FirstOrDefaultAsync(x => x.IsBOTD == true);
         }
 
         public async Task<BeanDbRecord> InsertNewBeanRecordAsync(BeanDbRecord record, CancellationToken cancellationToken)

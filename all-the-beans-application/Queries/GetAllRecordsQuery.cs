@@ -8,7 +8,7 @@ namespace all_the_beans_application.Queries
 
     public sealed class GetAllRecords : IRequestHandler<GetAllRecordsQuery, List<BeanDbRecord>>
     {
-        private IBeansDbRepository _appDbRepo;
+        private readonly IBeansDbRepository _appDbRepo;
 
         public GetAllRecords(IBeansDbRepository appDbRepo)
         {

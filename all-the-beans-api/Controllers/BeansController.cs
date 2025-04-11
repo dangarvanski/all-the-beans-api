@@ -43,10 +43,26 @@ namespace all_the_beans_api.Controllers
 
             if (post == null)
             {
-                return NotFound("Post not found!");
+                return NotFound("Record not found!");
             }
 
             return Ok(post);
+        }
+
+        [HttpGet("get-bean-of-the-day-record")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<BeanDbRecord>> GetBeanOfTheDayRecord()
+        {
+            var record = await _mediator.Send(new GetBeanOfTheDayRecordQuery());
+
+            if (record == null)
+            {
+                return NotFound("Bean of the day has not been found!");
+            }
+
+            return Ok(record);
         }
 
         [HttpPost("create-record")]
