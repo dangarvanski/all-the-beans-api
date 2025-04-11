@@ -11,6 +11,5 @@ namespace all_the_breans_infrastructure.Interfaces
         Task<bool> UpdateBeanRecordAsync(BeanDbRecord originalRecord, BeanDbRecord updatedRecord, CancellationToken cancellationToken);
         Task<bool> DeleteRecordByIndexAsync(BeanDbRecord record, CancellationToken cancellationToken);
         Task SetBeanOfTheDayAsync(int currentBOTDIndex, int newBOTDIndex);
-        Task<BeanOfTheDayDbRecord> InsertRecordAsync(BeanOfTheDayDbRecord record);
     }
 }

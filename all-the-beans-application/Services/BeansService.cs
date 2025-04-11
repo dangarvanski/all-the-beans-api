@@ -1,16 +1,33 @@
 ﻿using all_the_beans_application.Interfaces;
 using all_the_breans_infrastructure.Interfaces;
-using System;
+using Microsoft.Extensions.Hosting;
 
 namespace all_the_beans_application.Services
 {
-    public class BeansService : IBeansService
+    public class BeansService : BackgroundService, IBeansService
     {
         private readonly IBeansDbRepository _appDbContext;
+        private readonly TimeSpan _startTime = TimeSpan.FromHours(0); // Midnight
 
         public BeansService(IBeansDbRepository appDbContext)
         {
             _appDbContext = appDbContext;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                var now = DateTime.Now;
+                var nextRun = DateTime.Today.AddDays(1).Add(_startTime); // Tomorrow at midnight
+                if (now > nextRun)
+                    nextRun = nextRun.AddDays(1);
+
+                var delay = nextRun - now;
+                await Task.Delay(delay, stoppingToken);
+
+                SetBeanOfTheDay();
+            }
         }
 
         public async void SetBeanOfTheDay()

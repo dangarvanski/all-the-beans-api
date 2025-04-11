@@ -4,14 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace all_the_breans_infrastructure.Repositories
 {
-    public class BeansDbRepository : DbContext, IBeansDbRepository
+    public class BeansDbRepository(DbContextOptions<BeansDbRepository> options) : DbContext(options), IBeansDbRepository
     {
         private DbSet<BeanDbRecord> Beans { get; set; }
-        private DbSet<BeanOfTheDayDbRecord> BeanOfTheDay { get; set; }
-
-        public BeansDbRepository(DbContextOptions<BeansDbRepository> options) : base(options)
-        {
-        }
 
         public async Task<List<BeanDbRecord>> GetAllRecordsAsync()
         {
@@ -85,13 +80,6 @@ namespace all_the_breans_infrastructure.Repositories
             {
                 throw new Exception("Failed to set new bean of the day", ex);
             }
-        }
-
-        public async Task<BeanOfTheDayDbRecord> InsertRecordAsync(BeanOfTheDayDbRecord record)
-        {
-            BeanOfTheDay.Add(record);          // Add the record to the DbSet
-            await SaveChangesAsync();   // Save changes to the database
-            return record;              // Return the inserted record
         }
     }
 }
