@@ -33,7 +33,7 @@ namespace all_the_beans_application.Commands
                 Country = request.createRecordRequest.Country
             };
 
-            var result = await _beansDbRepo.InsertNewBeanRecordAsync(newRecord);
+            var result = await _beansDbRepo.InsertNewBeanRecordAsync(newRecord, cancellationToken);
             var response = new Dictionary<bool, int>();
 
             if (result != null)

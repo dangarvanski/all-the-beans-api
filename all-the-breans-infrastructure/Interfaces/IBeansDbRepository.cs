@@ -8,7 +8,9 @@ namespace all_the_breans_infrastructure.Interfaces
         DbSet<BeanDbRecord> Beans { get; set; }
         Task<List<BeanDbRecord>> GetAllRecordsAsync();
         Task<BeanDbRecord?> GetRecordByIndexAsync(int id);
-        Task<BeanDbRecord> InsertNewBeanRecordAsync(BeanDbRecord record);
+        Task<BeanDbRecord> InsertNewBeanRecordAsync(BeanDbRecord record, CancellationToken cancellationToken);
+        Task<bool> UpdateBeanRecordAsync(BeanDbRecord originalRecord, BeanDbRecord updatedRecord, CancellationToken cancellationToken);
+        Task<bool> DeleteRecordByIndexAsync(BeanDbRecord record, CancellationToken cancellationToken);
         Task<BeanOfTheDayDbRecord> InsertRecordAsync(BeanOfTheDayDbRecord record);
     }
 }
