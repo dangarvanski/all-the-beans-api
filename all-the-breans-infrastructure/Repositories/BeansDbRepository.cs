@@ -6,8 +6,8 @@ namespace all_the_breans_infrastructure.Repositories
 {
     public class BeansDbRepository : DbContext, IBeansDbRepository
     {
-        public DbSet<BeanDbRecord> Beans { get; set; }
-        public DbSet<BeanOfTheDayDbRecord> BeanOfTheDay { get; set; }
+        private DbSet<BeanDbRecord> Beans { get; set; }
+        private DbSet<BeanOfTheDayDbRecord> BeanOfTheDay { get; set; }
 
         public BeansDbRepository(DbContextOptions<BeansDbRepository> options) : base(options)
         {
@@ -67,6 +67,23 @@ namespace all_the_breans_infrastructure.Repositories
             catch (DbUpdateException ex)
             {
                 throw new Exception("Failed to delete record", ex);
+            }
+        }
+
+        public async Task SetBeanOfTheDayAsync(int currentBOTDIndex, int newBOTDIndex)
+        {
+            try
+            {
+                var currentBOTD = await Beans.FirstOrDefaultAsync(x => x.index == currentBOTDIndex);
+                var newBOTD = await Beans.FirstOrDefaultAsync(x => x.index == newBOTDIndex);
+
+                currentBOTD!.IsBOTD = false;
+                newBOTD!.IsBOTD = true;
+                await SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Failed to set new bean of the day", ex);
             }
         }
 

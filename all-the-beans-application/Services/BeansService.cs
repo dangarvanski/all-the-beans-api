@@ -1,6 +1,6 @@
 ﻿using all_the_beans_application.Interfaces;
 using all_the_breans_infrastructure.Interfaces;
-using all_the_breans_sharedKernal.Entities;
+using System;
 
 namespace all_the_beans_application.Services
 {
@@ -13,22 +13,25 @@ namespace all_the_beans_application.Services
             _appDbContext = appDbContext;
         }
 
-        public async Task<BeanDbRecord?> GetRecordByIndexAsync(int id)
+        public async void SetBeanOfTheDay()
         {
-            return await _appDbContext.GetRecordByIndexAsync(id);
+            var beansIndexes = (await _appDbContext.GetAllRecordsAsync()).Select(x => x.index).ToList();
+            var currentBOTD = await _appDbContext.GetBeanOfTheDayRecordAsync();
+
+            int newBOTDIndex;
+            do
+            {
+                var randomNumber = GenerateNumWithinRange(beansIndexes.Count());
+                newBOTDIndex = beansIndexes[randomNumber];
+            } while (newBOTDIndex == currentBOTD!.index);
+
+            await _appDbContext.SetBeanOfTheDayAsync(currentBOTD!.index, newBOTDIndex);
         }
 
-        public async Task<BeanOfTheDayDbRecord> AddBeanOfTheDay()
+        private int GenerateNumWithinRange(int upperLimit)
         {
-            var beanOfTheDay = _appDbContext.GetAllRecordsAsync().Result.FirstOrDefault(x => x.IsBOTD == true);
-            var beanOfTheDayRecord = new BeanOfTheDayDbRecord
-            {
-                _id = Guid.NewGuid(),
-                BeanIndex = beanOfTheDay.index,
-                Date = DateTime.Now
-            };
-
-            return await _appDbContext.InsertRecordAsync(beanOfTheDayRecord);
+            Random rnd = new Random();
+            return rnd.Next(0, upperLimit);
         }
     }
 }
