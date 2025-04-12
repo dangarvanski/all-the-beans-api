@@ -2,6 +2,5 @@
 {
     public interface IBeansService
     {
-        void SetBeanOfTheDay();
     }
 }

@@ -30,7 +30,7 @@ namespace all_the_beans_application.Services
             }
         }
 
-        public async void SetBeanOfTheDay()
+        private async void SetBeanOfTheDay()
         {
             var beansIndexes = (await _appDbContext.GetAllRecordsAsync()).Select(x => x.index).ToList();
             var currentBOTD = await _appDbContext.GetBeanOfTheDayRecordAsync();

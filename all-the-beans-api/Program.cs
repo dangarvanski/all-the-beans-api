@@ -3,6 +3,7 @@ using all_the_beans_application.Queries;
 using all_the_beans_application.Services;
 using all_the_breans_infrastructure.Interfaces;
 using all_the_breans_infrastructure.Repositories;
+using AspNetCoreRateLimit;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -19,6 +20,10 @@ builder.Services.AddDbContext<BeansDbRepository>(options =>
 builder.Services.AddScoped<IBeansDbRepository, BeansDbRepository>();
 builder.Services.AddScoped<IBeansService, BeansService>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(), typeof(GetRecordByIndexQuery).Assembly));
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddInMemoryRateLimiting();
 
 var app = builder.Build();
 
@@ -36,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseIpRateLimiting();
 
 app.UseAuthorization();
 

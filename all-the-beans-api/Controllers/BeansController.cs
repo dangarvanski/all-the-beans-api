@@ -71,6 +71,11 @@ namespace all_the_beans_api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Dictionary<bool, int>>> CreateRecord(CreateRecordRequest newRecord)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await _mediator.Send(new CreateRecordCommand(newRecord));
 
             if (result.ContainsKey(false))
@@ -88,6 +93,11 @@ namespace all_the_beans_api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<BeanDbRecord>> UpdateRecord(int index, [FromBody] UpdateRecordRequest recordUpdate)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await _mediator.Send(new UpdateRecordCommand(index, recordUpdate));
 
             if (result == null)
