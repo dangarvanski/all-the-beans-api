@@ -1,6 +1,7 @@
 ﻿using all_the_beans_application.Interfaces;
 using all_the_breans_infrastructure.Interfaces;
 using Microsoft.Extensions.Hosting;
+using Polly;
 
 namespace all_the_beans_application.Services
 {
@@ -16,6 +17,10 @@ namespace all_the_beans_application.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(3, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)));
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 var now = DateTime.Now;
@@ -26,13 +31,13 @@ namespace all_the_beans_application.Services
                 var delay = nextRun - now;
                 await Task.Delay(delay, stoppingToken);
 
-                SetBeanOfTheDay();
+                await retryPolicy.ExecuteAsync(SetBeanOfTheDay);
             }
         }
 
-        private async void SetBeanOfTheDay()
+        private async Task SetBeanOfTheDay()
         {
-            var beansIndexes = (await _appDbContext.GetAllRecordsAsync()).Select(x => x.index).ToList();
+            var beansIndexes = await _appDbContext.GetAllIndexesForRecordsAsync();
             var currentBOTD = await _appDbContext.GetBeanOfTheDayRecordAsync();
 
             int newBOTDIndex;

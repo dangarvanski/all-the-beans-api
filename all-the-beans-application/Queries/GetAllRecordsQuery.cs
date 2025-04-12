@@ -4,7 +4,7 @@ using MediatR;
 
 namespace all_the_beans_application.Queries
 {
-    public record GetAllRecordsQuery : IRequest<List<BeanDbRecord>>;
+    public record GetAllRecordsQuery(int page, int pageSize) : IRequest<List<BeanDbRecord>>;
 
     public sealed class GetAllRecords : IRequestHandler<GetAllRecordsQuery, List<BeanDbRecord>>
     {
@@ -17,7 +17,7 @@ namespace all_the_beans_application.Queries
 
         public async Task<List<BeanDbRecord>> Handle(GetAllRecordsQuery request, CancellationToken cancellationToken)
         {
-            return await _appDbRepo.GetAllRecordsAsync();
+            return await _appDbRepo.GetAllRecordsAsync(request.page, request.pageSize);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace all_the_beans_application.Commands
         public async Task<Dictionary<bool, int>> Handle(CreateRecordCommand request, CancellationToken cancellationToken)
         {
             // Keeping it the same as .Count returns exact number of items while the indexes start from 0
-            var newIndex = (await _beansDbRepo.GetAllRecordsAsync()).Count; 
+            var newIndex = await _beansDbRepo.GetRecordCount(); 
             
             var newRecord = new BeanDbRecord
             {

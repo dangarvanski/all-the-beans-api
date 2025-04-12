@@ -1,7 +1,7 @@
 ﻿using all_the_breans_infrastructure.Interfaces;
 using all_the_breans_sharedKernal.Entities;
 using MediatR;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Reflection;
 
 namespace all_the_beans_application.Commands
 {
@@ -10,6 +10,8 @@ namespace all_the_beans_application.Commands
     public sealed class UpdateRecordCommandHandler : IRequestHandler<UpdateRecordCommand, BeanDbRecord?>
     {
         private readonly IBeansDbRepository _beansDbRepo;
+        private static readonly PropertyInfo[] _updateProperties = typeof(UpdateRecordRequest).GetProperties();
+        private static readonly PropertyInfo[] _recordProperties = typeof(BeanDbRecord).GetProperties();
 
         public UpdateRecordCommandHandler(IBeansDbRepository beansDbRepo)
         {
@@ -25,33 +27,31 @@ namespace all_the_beans_application.Commands
             }
 
             bool hasValidField = false;
-            var updatedRecord = dbRecord;
-            var updateProperties = typeof(UpdateRecordRequest).GetProperties();
-            foreach (var prop in updateProperties)
+            foreach (var prop in _updateProperties)
             {
                 var value = prop.GetValue(request.updateRecordRequest) as string;
                 if (value != null && value != string.Empty && value != "string")
                 {
-                    var recordProp = typeof(BeanDbRecord).GetProperty(prop.Name);
+                    var recordProp = Array.Find(_recordProperties, p => p.Name == prop.Name);
                     if (recordProp != null && recordProp.CanWrite)
                     {
-                        recordProp.SetValue(updatedRecord, value);
+                        recordProp.SetValue(dbRecord, value);
                         hasValidField = true;
                     }
                 }
             }
 
             if (!hasValidField)
+            {
                 throw new ArgumentException("At least one valid field must be provided");
+            }
 
-            var success = await _beansDbRepo.UpdateBeanRecordAsync(dbRecord, updatedRecord, cancellationToken);
-
+            var success = await _beansDbRepo.UpdateBeanRecordAsync(dbRecord, cancellationToken);
             if (!success)
             {
                 return null;
             }
-
-            return updatedRecord;
+            return dbRecord;
         }
     }
 }

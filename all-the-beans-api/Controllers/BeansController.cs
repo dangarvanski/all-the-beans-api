@@ -17,13 +17,12 @@ namespace all_the_beans_api.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("get-all-records")]
+        [HttpGet("all-records")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<BeanDbRecord>>> GetRecordById()
+        public async Task<ActionResult<List<BeanDbRecord>>> GetRecordById([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var records = await _mediator.Send(new GetAllRecordsQuery());
+            var records = await _mediator.Send(new GetAllRecordsQuery(page, pageSize));
 
             if (records.Count == 0)
             {
@@ -33,10 +32,9 @@ namespace all_the_beans_api.Controllers
             return Ok(records);
         }
 
-        [HttpGet("get-record-by-index/{index}")]
+        [HttpGet("record-by-index/{index}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
         public async Task<ActionResult<BeanDbRecord>> GetRecordById(int index)
         {
             var post = await _mediator.Send(new GetRecordByIndexQuery(index));
@@ -49,10 +47,10 @@ namespace all_the_beans_api.Controllers
             return Ok(post);
         }
 
-        [HttpGet("get-bean-of-the-day-record")]
+        [HttpGet("bean-of-the-day")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult<BeanDbRecord>> GetBeanOfTheDayRecord()
         {
             var record = await _mediator.Send(new GetBeanOfTheDayRecordQuery());
@@ -68,7 +66,6 @@ namespace all_the_beans_api.Controllers
         [HttpPost("create-record")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
         public async Task<ActionResult<Dictionary<bool, int>>> CreateRecord(CreateRecordRequest newRecord)
         {
             if (!ModelState.IsValid)
@@ -90,7 +87,6 @@ namespace all_the_beans_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesDefaultResponseType]
         public async Task<ActionResult<BeanDbRecord>> UpdateRecord(int index, [FromBody] UpdateRecordRequest recordUpdate)
         {
             if (!ModelState.IsValid)
@@ -111,7 +107,6 @@ namespace all_the_beans_api.Controllers
         [HttpDelete("delete-record/{index}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
         public async Task<ActionResult<bool>> DeleteRecord(int index)
         {
             var result = await _mediator.Send(new DeleteRecordCommand(index));
