@@ -4,15 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace all_the_breans_infrastructure.Repositories
 {
-    public class BeansDbRepository : DbContext, IBeansDbRepository
+    public class BeansDbRepository(DbContextOptions<BeansDbRepository> options) : DbContext(options), IBeansDbRepository
     {
         private DbSet<BeanDbRecord> Beans { get; set; }
         private int RecordCount = 0;
-
-        public BeansDbRepository(DbContextOptions<BeansDbRepository> options) : base(options)
-        {
-            UpdateCount();
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,9 +18,15 @@ namespace all_the_breans_infrastructure.Repositories
                 .IsUnique();
         }
 
-        public async Task<int> GetRecordCount()
+        public async Task<int> GetRecordCount(CancellationToken cancellationToken)
         {
+            await UpdateCountAsync(cancellationToken);
             return RecordCount;
+        }
+
+        public async Task UpdateCountAsync(CancellationToken cancellationToken = default)
+        {
+            RecordCount = await Beans.CountAsync(cancellationToken);
         }
 
         public async Task<List<BeanDbRecord>> GetAllRecordsAsync(int page, int pageSize)
@@ -65,7 +66,7 @@ namespace all_the_breans_infrastructure.Repositories
             {
                 Beans.Add(record);
                 await SaveChangesAsync(cancellationToken);
-                UpdateCount();
+                await UpdateCountAsync(cancellationToken);
                 return record;
             }
             catch (DbUpdateException ex)
@@ -84,7 +85,8 @@ namespace all_the_breans_infrastructure.Repositories
             var entry = Entry(updatedRecord);
             if (entry.State == EntityState.Detached)
             {
-                return false;
+                Beans.Update(updatedRecord);
+                entry = Entry(updatedRecord);
             }
 
             try
@@ -104,7 +106,7 @@ namespace all_the_breans_infrastructure.Repositories
             {
                 Beans.Remove(record);
                 await SaveChangesAsync(cancellationToken);
-                UpdateCount();
+                await UpdateCountAsync(cancellationToken);
                 return true;
             }
             catch (DbUpdateException ex)
@@ -132,11 +134,6 @@ namespace all_the_breans_infrastructure.Repositories
             {
                 throw new Exception("Failed to set new bean of the day", ex);
             }
-        }
-
-        private void UpdateCount()
-        {
-            RecordCount = Beans.ToList().Count;
         }
     }
 }
