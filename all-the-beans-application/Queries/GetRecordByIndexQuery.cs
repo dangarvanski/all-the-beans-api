@@ -6,11 +6,11 @@ namespace all_the_beans_application.Queries
 {
     public record GetRecordByIndexQuery(int id) : IRequest<BeanDbRecord?>;
 
-    public sealed class GetRecordById : IRequestHandler<GetRecordByIndexQuery, BeanDbRecord?>
+    public sealed class GetRecordByIndexQueryHandler : IRequestHandler<GetRecordByIndexQuery, BeanDbRecord?>
     {
         private readonly IBeansDbRepository _beansDbRepo;
 
-        public GetRecordById(IBeansDbRepository beansDbRepo)
+        public GetRecordByIndexQueryHandler(IBeansDbRepository beansDbRepo)
         {
             _beansDbRepo = beansDbRepo;
         }

@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-api", "all-the-beans-api\all-the-beans-api.csproj", "{2FAC05A6-15AC-4E0C-B81A-F6D086003DC1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{376C29B6-0EC4-4AA6-A2BC-BDDB1949602C} = {376C29B6-0EC4-4AA6-A2BC-BDDB1949602C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-breans-infrastructure", "all-the-breans-infrastructure\all-the-breans-infrastructure.csproj", "{0C3018D6-B3CC-4588-9508-768952A8D43F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-infrastructure", "all-the-breans-infrastructure\all-the-beans-infrastructure.csproj", "{0C3018D6-B3CC-4588-9508-768952A8D43F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-breans-sharedKernal", "all-the-breans-sharedKernal\all-the-breans-sharedKernal.csproj", "{1823289A-43E4-440F-B546-5692CD1E18C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-sharedKernal", "all-the-breans-sharedKernal\all-the-beans-sharedKernal.csproj", "{1823289A-43E4-440F-B546-5692CD1E18C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-application", "all-the-beans-application\all-the-beans-application.csproj", "{376C29B6-0EC4-4AA6-A2BC-BDDB1949602C}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-application",
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateSQLiteDatabase", "CreateSQLiteDatabase\CreateSQLiteDatabase.csproj", "{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "all-the-beans-tests-unit", "all-the-beans-tests-unit\all-the-beans-tests-unit.csproj", "{0BEA5E94-1B0C-4140-881B-F5F3D0921FCA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{376C29B6-0EC4-4AA6-A2BC-BDDB1949602C} = {376C29B6-0EC4-4AA6-A2BC-BDDB1949602C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +50,10 @@ Global
 		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B1CEE28-B70F-4CE5-8ACE-B155681E3B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BEA5E94-1B0C-4140-881B-F5F3D0921FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEA5E94-1B0C-4140-881B-F5F3D0921FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BEA5E94-1B0C-4140-881B-F5F3D0921FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BEA5E94-1B0C-4140-881B-F5F3D0921FCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
