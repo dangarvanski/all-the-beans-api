@@ -17,8 +17,17 @@ namespace all_the_beans_application.Commands
 
         public async Task<Dictionary<bool, int>> Handle(CreateRecordCommand request, CancellationToken cancellationToken)
         {
+            var invalidValues = new[] { string.Empty, "string" };
+            if (invalidValues.Contains(request.createRecordRequest.Cost?.Trim(), StringComparer.OrdinalIgnoreCase) ||
+            invalidValues.Contains(request.createRecordRequest.Country?.Trim(), StringComparer.OrdinalIgnoreCase) ||
+            invalidValues.Contains(request.createRecordRequest.Name?.Trim(), StringComparer.OrdinalIgnoreCase))
+            {
+                // Validation failed: return failure response
+                return new Dictionary<bool, int> { { false, 0 } };
+            }
+
             // Keeping it the same as .Count returns exact number of items while the indexes start from 0
-            var newIndex = await _beansDbRepo.GetRecordCount(); 
+            var newIndex = await _beansDbRepo.GetRecordCount(cancellationToken); 
             
             var newRecord = new BeanDbRecord
             {

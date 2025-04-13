@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>all_the_breans_infrastructure</RootNamespace>
+    <RootNamespace>all_the_beans_infrastructure</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\all-the-breans-sharedKernal\all-the-breans-sharedKernal.csproj" />
+    <ProjectReference Include="..\all-the-breans-sharedKernal\all-the-beans-sharedKernal.csproj" />
   </ItemGroup>
 
 </Project>

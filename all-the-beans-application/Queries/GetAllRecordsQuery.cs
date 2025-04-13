@@ -6,11 +6,11 @@ namespace all_the_beans_application.Queries
 {
     public record GetAllRecordsQuery(int page, int pageSize) : IRequest<List<BeanDbRecord>>;
 
-    public sealed class GetAllRecords : IRequestHandler<GetAllRecordsQuery, List<BeanDbRecord>>
+    public sealed class GetAllRecordsQueryHandler : IRequestHandler<GetAllRecordsQuery, List<BeanDbRecord>>
     {
         private readonly IBeansDbRepository _appDbRepo;
 
-        public GetAllRecords(IBeansDbRepository appDbRepo)
+        public GetAllRecordsQueryHandler(IBeansDbRepository appDbRepo)
         {
             _appDbRepo = appDbRepo;
         }

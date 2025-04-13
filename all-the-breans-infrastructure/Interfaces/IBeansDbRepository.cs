@@ -4,7 +4,8 @@ namespace all_the_breans_infrastructure.Interfaces
 {
     public interface IBeansDbRepository
     {
-        Task<int> GetRecordCount();
+        Task<int> GetRecordCount(CancellationToken cancellationToken);
+        Task UpdateCountAsync(CancellationToken cancellationToken);
         Task<List<BeanDbRecord>> GetAllRecordsAsync(int page, int pageSize);
         Task<List<int>> GetAllIndexesForRecordsAsync();
         Task<BeanDbRecord?> GetRecordByIndexAsync(int id);

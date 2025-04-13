@@ -6,11 +6,11 @@ namespace all_the_beans_application.Queries
 {
     public record GetBeanOfTheDayRecordQuery : IRequest<BeanDbRecord?>;
 
-    public sealed class GetBeanOfTheDayRecordHandler : IRequestHandler<GetBeanOfTheDayRecordQuery, BeanDbRecord?>
+    public sealed class GetBeanOfTheDayRecordQueryHandler : IRequestHandler<GetBeanOfTheDayRecordQuery, BeanDbRecord?>
     {
         private readonly IBeansDbRepository _beansDbRepo;
 
-        public GetBeanOfTheDayRecordHandler(IBeansDbRepository beansDbRepo)
+        public GetBeanOfTheDayRecordQueryHandler(IBeansDbRepository beansDbRepo)
         {
             _beansDbRepo = beansDbRepo;
         }

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\all-the-breans-infrastructure\all-the-breans-infrastructure.csproj" />
+    <ProjectReference Include="..\all-the-breans-infrastructure\all-the-beans-infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
