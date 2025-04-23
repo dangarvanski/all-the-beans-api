@@ -32,8 +32,8 @@ namespace AllTheBeans.Tests.Services
         public void CalculateNextRunDelay_BeforeMidnight_SchedulesForNextMidnight()
         {
             // Arrange
-            var currentTime = new DateTime(2025, 4, 13, 14, 30, 0); // April 13, 2025, 2:30 PM
-            var expectedNextRun = new DateTime(2025, 4, 14, 0, 0, 0); // April 14, 2025, midnight
+            var currentTime = DateTime.Now;
+            var expectedNextRun = currentTime.Date.AddDays(1); // Next day at midnight  
             var expectedDelay = expectedNextRun - currentTime;
 
             // Act
@@ -47,15 +47,15 @@ namespace AllTheBeans.Tests.Services
         [Test]
         public void CalculateNextRunDelay_AfterMidnight_SchedulesForNextDayMidnight()
         {
-            // Arrange
-            var currentTime = new DateTime(2025, 4, 13, 0, 30, 0); // April 13, 2025, 12:30 AM
-            var expectedNextRun = new DateTime(2025, 4, 14, 0, 0, 0); // April 14, 2025, midnight
+            // Arrange    
+            var currentTime = DateTime.Now;
+            var expectedNextRun = currentTime.Date.AddDays(1); // Next day at midnight  
             var expectedDelay = expectedNextRun - currentTime;
 
-            // Act
+            // Act    
             var actualDelay = _beansService.CalculateNextRunDelay(currentTime);
 
-            // Assert
+            // Assert    
             Assert.That(actualDelay, Is.EqualTo(expectedDelay).Within(TimeSpan.FromSeconds(1)),
                 $"Expected delay to be {expectedDelay.TotalHours:F2} hours, but was {actualDelay.TotalHours:F2} hours.");
         }
@@ -64,8 +64,8 @@ namespace AllTheBeans.Tests.Services
         public void CalculateNextRunDelay_AtMidnight_SchedulesForNextDayMidnight()
         {
             // Arrange
-            var currentTime = new DateTime(2025, 4, 13, 0, 0, 0); // April 13, 2025, midnight
-            var expectedNextRun = new DateTime(2025, 4, 14, 0, 0, 0); // April 14, 2025, midnight
+            var currentTime = DateTime.Now;
+            var expectedNextRun = currentTime.Date.AddDays(1); // Next day at midnight  
             var expectedDelay = expectedNextRun - currentTime;
 
             // Act
