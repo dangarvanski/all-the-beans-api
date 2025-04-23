@@ -20,7 +20,7 @@ namespace all_the_beans_api.Controllers
         [HttpGet("all-records")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<BeanDbRecord>>> GetAllRecord([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<List<BeanDbRecord>>> GetAllRecords([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var records = await _mediator.Send(new GetAllRecordsQuery(page, pageSize));
 

@@ -143,7 +143,7 @@ public class BeansControllerTests
         Console.WriteLine("Records added: count=2");
 
         // Act
-        var response = await _client.GetAsync("/beans/all-records?page=1&pageSize=10");
+        var response = await _client.GetAsync("/api/beans/all-records?page=1&pageSize=10");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"GET response: {response.StatusCode}, Content: '{responseContent}'");
         List<BeanDbRecord>? result = null;
@@ -164,7 +164,7 @@ public class BeansControllerTests
     public async Task GetAllRecords_UnhappyPath_NoRecords_ReturnsNotFound()
     {
         // Act
-        var response = await _client.GetAsync("/beans/all-records?page=999&pageSize=10");
+        var response = await _client.GetAsync("/api/beans/all-records?page=999&pageSize=10");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"GET response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -193,7 +193,7 @@ public class BeansControllerTests
         Console.WriteLine("Record added: index=15");
 
         // Act
-        var response = await _client.GetAsync("/beans/record-by-index/15");
+        var response = await _client.GetAsync("/api/beans/record-by-index/15");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"GET response: {response.StatusCode}, Content: '{responseContent}'");
         BeanDbRecord? result = null;
@@ -213,7 +213,7 @@ public class BeansControllerTests
     public async Task GetRecordByIndex_UnhappyPath_NotFound_ReturnsNotFound()
     {
         // Act
-        var response = await _client.GetAsync("/beans/record-by-index/999");
+        var response = await _client.GetAsync("/api/beans/record-by-index/999");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"GET response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -242,7 +242,7 @@ public class BeansControllerTests
         Console.WriteLine("BOTD added: index=15");
 
         // Act
-        var response = await _client.GetAsync("/beans/bean-of-the-day");
+        var response = await _client.GetAsync("/api/beans/bean-of-the-day");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"GET response: {response.StatusCode}, Content: '{responseContent}'");
         BeanDbRecord? result = null;
@@ -262,7 +262,7 @@ public class BeansControllerTests
     public async Task GetBeanOfTheDay_UnhappyPath_NoBOTD_ReturnsNotFound()
     {
         // Act
-        var response = await _client.GetAsync("/beans/bean-of-the-day");
+        var response = await _client.GetAsync("/api/beans/bean-of-the-day");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"GET response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -285,7 +285,7 @@ public class BeansControllerTests
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/beans/create-record", newRecord);
+        var response = await _client.PostAsJsonAsync("/api/beans/create-record", newRecord);
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"POST response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -313,7 +313,7 @@ public class BeansControllerTests
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/beans/create-record", invalidRecord);
+        var response = await _client.PostAsJsonAsync("/api/beans/create-record", invalidRecord);
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"POST response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -346,7 +346,7 @@ public class BeansControllerTests
         var updateRequest = new UpdateRecordRequest { Description = "Really good!" };
 
         // Act
-        var response = await _client.PatchAsJsonAsync("/beans/update-record/15", updateRequest);
+        var response = await _client.PatchAsJsonAsync("/api/beans/update-record/15", updateRequest);
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"PATCH response: {response.StatusCode}, Content: '{responseContent}'");
         BeanDbRecord? updatedRecord = null;
@@ -361,7 +361,7 @@ public class BeansControllerTests
         Assert.That(updatedRecord.Description, Is.EqualTo("Really good!"), "Description mismatch in response");
 
         // Verify database
-        var dbRecordResponse = await _client.GetAsync("/beans/record-by-index/15");
+        var dbRecordResponse = await _client.GetAsync("/api/beans/record-by-index/15");
         var dbRecordResponseContent = await response.Content.ReadAsStringAsync();
         var dbRecord = JsonSerializer.Deserialize<BeanDbRecord>(responseContent);
         Assert.That(dbRecord, Is.Not.Null, "Database record not found");
@@ -375,7 +375,7 @@ public class BeansControllerTests
         var updateRequest = new UpdateRecordRequest { Description = "Really good!" };
 
         // Act
-        var response = await _client.PatchAsJsonAsync("/beans/update-record/999", updateRequest);
+        var response = await _client.PatchAsJsonAsync("/api/beans/update-record/999", updateRequest);
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"PATCH response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -404,7 +404,7 @@ public class BeansControllerTests
         Console.WriteLine("Record added: index=15");
 
         // Act
-        var response = await _client.DeleteAsync("/beans/delete-record/15");
+        var response = await _client.DeleteAsync("/api/beans/delete-record/15");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"DELETE response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -419,7 +419,7 @@ public class BeansControllerTests
     public async Task DeleteRecord_UnhappyPath_NotFound_ReturnsBadRequest()
     {
         // Act
-        var response = await _client.DeleteAsync("/beans/delete-record/999");
+        var response = await _client.DeleteAsync("/api/beans/delete-record/999");
         var responseContent = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"DELETE response: {response.StatusCode}, Content: '{responseContent}'");
 
@@ -453,7 +453,7 @@ public class BeansControllerTests
         int totalRequests = 100;
         for (int i = 0; i < totalRequests; i++)
         {
-            var response = await _client.GetAsync("/beans/record-by-index/15");
+            var response = await _client.GetAsync("/api/beans/record-by-index/15");
             // Log rate-limiting headers
             Console.WriteLine($"Request {i + 1} - Status: {response.StatusCode}");
             if (response.Headers.Contains("X-Rate-Limit-Limit"))
@@ -471,7 +471,7 @@ public class BeansControllerTests
         Console.WriteLine($"First 100 requests - Successful: {successCount}");
 
         // Send 101st request
-        var lastResponse = await _client.GetAsync("/beans/record-by-index/15");
+        var lastResponse = await _client.GetAsync("/api/beans/record-by-index/15");
         var lastContent = await lastResponse.Content.ReadAsStringAsync();
         Console.WriteLine($"101st GET response: {lastResponse.StatusCode}, Content: '{lastContent}'");
         if (lastResponse.Headers.Contains("X-Rate-Limit-Limit"))
